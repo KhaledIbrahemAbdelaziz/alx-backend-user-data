@@ -39,10 +39,10 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """Find the user by any item in the database"""
-        if not kwargs or any(x not in VALID_FIELDS for x in kwargs):
-            raise InvalidRequestError
-        session = self._session
         try:
-            return session.query(User).filter_by(**kwargs).one()
-        except Exception:
+            record = self._session.query(User).filter_by(**kwargs).first()
+        except TypeError:
+            raise InvalidRequestError
+        if record is None:
             raise NoResultFound
+        return record
