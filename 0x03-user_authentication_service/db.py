@@ -12,7 +12,7 @@ class DB:
     """DB class."""
 
     def __init__(self):
-        """Constructor."""
+        """Initialize a new DB instance."""
         self._engine = create_engine("sqlite:///a.db", echo=False)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
@@ -20,7 +20,7 @@ class DB:
 
     @property
     def _session(self):
-        """_session."""
+        """Memoized session object."""
         if self.__session is None:
             DBSession = sessionmaker(bind=self._engine)
             self.__session = DBSession()
